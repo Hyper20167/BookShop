@@ -686,7 +686,7 @@ function previewCover() {
    CREATE BOOK
 ========================================= */
 
-function createBook() {
+async function createBook() {
 
     const title =
         document.getElementById(
@@ -783,26 +783,25 @@ function createBook() {
     reader.onload =
         function(event) {
 
-            books.push({
+const newBook = {
+    title: title,
+    author: author,
+    price: price,
+    image: event.target.result,
+    text: bookText
+};
 
-                title: title,
+const savedId = await saveBookToFirebase(newBook);
 
-                author: author,
+if (!savedId) {
+    return;
+}
 
-                price: price,
+newBook.id = savedId;
 
-                image:
-                    event.target.result,
+books.push(newBook);
 
-                text:
-                    bookText
-
-            });
-
-
-            saveBooks();
-
-            displayBooks();
+displayBooks();
 
 
             /* CLEAR THE FORM */
