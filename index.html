@@ -482,32 +482,7 @@ const WHATSAPP_NUMBER = "201026103853";
    BOOKS
 ========================================= */
 
-let books = JSON.parse(
-    localStorage.getItem("loloBooks")
-) || [
-
-    {
-        title: "The Mystery Key",
-        author: "Lolo",
-        price: 5,
-        image:
-        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800",
-        text:
-        "Once upon a time, two twins discovered a mysterious glowing key..."
-    },
-
-    {
-        title: "Dragon Island",
-        author: "Lolo",
-        price: 7,
-        image:
-        "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800",
-        text:
-        "Far across the ocean was a mysterious island where dragons lived..."
-    }
-
-];
-
+let books = [];
 
 /* =========================================
    DISPLAY BOOKS
@@ -1129,11 +1104,47 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 async function loadBooksFromFirebase() {
-    const booksSnapshot = await getDocs(collection(db, "books"));
 
-    booksSnapshot.forEach((bookDoc) => {
-        console.log("📚 Book found:", bookDoc.data());
-    });
+    try {
+
+        const booksSnapshot =
+            await getDocs(
+                collection(db, "books")
+            );
+
+        books = [];
+
+        booksSnapshot.forEach((bookDoc) => {
+
+            const book =
+                bookDoc.data();
+
+            books.push({
+                id: bookDoc.id,
+                title: book.title || "Untitled",
+                author: book.author || "Unknown",
+                price: Number(book.price) || 0,
+                text: book.text || "",
+                image: book.image || ""
+            });
+
+        });
+
+        displayBooks();
+
+        console.log(
+            "📚 Books loaded from Firebase:",
+            books
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Could not load books:",
+            error
+        );
+
+    }
 }
 
 loadBooksFromFirebase();
