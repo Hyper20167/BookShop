@@ -779,9 +779,8 @@ if (!imageFile) {
     const reader =
         new FileReader();
 
-
-    reader.onload =
-        function(event) {
+reader.onload =
+    async function(event) {
 
 const newBook = {
     title: title,
