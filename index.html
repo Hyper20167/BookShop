@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lolo's Bookstore 📚</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #eee5ff, #faf7ff);
+    color: #222;
+}
+
+header {
+    background: linear-gradient(135deg, #6b35d9, #aa70ff);
+    color: white;
+    text-align: center;
+    padding: 45px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 48px;
+}
+
+header p {
+    font-size: 19px;
+}
+
+nav {
+    background: white;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,.1);
+}
+
+button {
+    cursor: pointer;
+}
+
+nav button,
+.primary {
+    background: #7139df;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 11px;
+    font-weight: bold;
+}
+
+nav button:hover,
+.primary:hover {
+    background: #5423b7;
+}
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+.books {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+.book {
+    background: white;
+    padding: 16px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+    transition: .2s;
+}
+
+.book:hover {
+    transform: translateY(-6px);
+}
+
+.book img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.book h2 {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #666;
+    min-height: 45px;
+}
+
+.price {
+    color: #7139df;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.buy {
+    width: 90%;
+    background: #7139df;
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 11px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.buy:hover {
+    background: #5423b7;
+}
+
+.delete {
+    margin-top: 10px;
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 8px 13px;
+    border-radius: 8px;
+}
+
+.panel {
+    display: none;
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+label {
+    font-weight: bold;
+}
+
+.close {
+    background: #777;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.message {
+    font-weight: bold;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+#buyModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.buyBox {
+    background: white;
+    width: 100%;
+    max-width: 520px;
+    padding: 30px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.closeModal {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    border: none;
+    background: #eee;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 35px;
+    margin-top: 60px;
+}
+
+@media(max-width:600px) {
+    header h1 {
+        font-size: 35px;
+    }
+
+    .book img {
+        height: 260px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 Lolo's Bookstore</h1>
+    <p>Find your next favorite book!</p>
+</header>
+
+<nav>
+    <button onclick="showOwnerLogin()">
+        🔐 Add a Book
+    </button>
+</nav>
+
+<div class="container">
+
+    <!-- OWNER PASSWORD -->
+
+    <div id="passwordPanel" class="panel">
+
+        <h2>🔐 Owner Area</h2>
+
+        <p>Enter the password to add a book.</p>
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            class="primary"
+            onclick="checkPassword()"
+        >
+            Enter
+        </button>
+
+        <button
+            class="close"
+            onclick="closePassword()"
+        >
+            Cancel
+        </button>
+
+        <p id="passwordMessage" class="message"></p>
+
+    </div>
+
+
+    <!-- ADD BOOK -->
+
+    <div id="addPanel" class="panel">
+
+        <h2>📖 Add a New Book</h2>
+
+        <label>Book Title</label>
+
+        <input
+            id="title"
+            type="text"
+            placeholder="Book title"
+        >
+
+        <label>Price</label>
+
+        <input
+            id="price"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Example: 5"
+        >
+
+        <label>Book Cover URL</label>
+
+        <input
+            id="image"
+            type="url"
+            placeholder="Paste your cover image URL"
+        >
+
+        <label>Description</label>
+
+        <textarea
+            id="description"
+            placeholder="Write about your book..."
+        ></textarea>
+
+        <button
+            class="primary"
+            onclick="addBook()"
+        >
+            ➕ Add Book
+        </button>
+
+        <button
+            class="close"
+            onclick="closeAddPanel()"
+        >
+            Close
+        </button>
+
+        <p id="addMessage" class="message"></p>
+
+    </div>
+
+
+    <h2 style="text-align:center;">
+        📚 Books For Sale
+    </h2>
+
+    <div id="books" class="books"></div>
+
+</div>
+
+
+<!-- BUY WINDOW -->
+
+<div id="buyModal">
+
+    <div class="buyBox">
+
+        <button
+            class="closeModal"
+            onclick="closeBuy()"
+        >
+            ✕
+        </button>
+
+        <h2>🛒 Buy This Book</h2>
+
+        <p id="selectedBook"></p>
+
+        <form id="orderForm">
+
+            <label>Your Name</label>
+
+            <input
+                id="buyerName"
+                type="text"
+                placeholder="Your name"
+                required
+            >
+
+            <label>Your Email</label>
+
+            <input
+                id="buyerEmail"
+                type="email"
+                placeholder="your@email.com"
+                required
+            >
+
+            <label>Message</label>
+
+            <textarea
+                id="buyerMessage"
+                placeholder="Message for the bookstore..."
+            ></textarea>
+
+            <button
+                class="primary"
+                type="submit"
+            >
+                📧 Send Order
+            </button>
+
+        </form>
+
+        <p id="orderMessage" class="message"></p>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <h2>📚 Lolo's Bookstore</h2>
+
+    <p>Thank you for visiting!</p>
+
+    <p>
+        Orders are sent to:
+        <strong>lolopurple9@gmail.com</strong>
+    </p>
+
+</footer>
+
+
+<!-- EMAILJS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+
+/* =================================================
+   YOUR EMAIL
+================================================= */
+
+const OWNER_EMAIL = "lolopurple9@gmail.com";
+
+
+/* =================================================
+   EMAILJS SETTINGS
+
+   Replace these three values with the values
+   from your EmailJS account.
+================================================= */
+
+const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+
+
+emailjs.init({
+    publicKey: EMAILJS_PUBLIC_KEY
+});
+
+
+/* =================================================
+   BOOKS
+================================================= */
+
+let books = JSON.parse(
+    localStorage.getItem("loloBooks")
+) || [
+
+    {
+        title: "The Mystery Key",
+        price: 5,
+        image:
+        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800",
+        description:
+        "A mysterious adventure about twins who discover a glowing key."
+    },
+
+    {
+        title: "Dragon Island",
+        price: 7,
+        image:
+        "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800",
+        description:
+        "An exciting adventure on a mysterious island."
+    }
+
+];
+
+
+/* =================================================
+   SHOW BOOKS
+================================================= */
+
+function displayBooks() {
+
+    const container =
+        document.getElementById("books");
+
+    container.innerHTML = "";
+
+
+    if (books.length === 0) {
+
+        container.innerHTML = `
+            <div style="text-align:center;">
+                <h2>📚 No books yet!</h2>
+                <p>Come back soon.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    books.forEach((book, index) => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "book";
+
+
+        card.innerHTML = `
+
+            <img
+                src="${escapeHTML(book.image)}"
+                alt="${escapeHTML(book.title)}"
+                onerror="
+                this.src='https://via.placeholder.com/600x800?text=Book'
+                "
+            >
+
+            <h2>
+                ${escapeHTML(book.title)}
+            </h2>
+
+            <p class="description">
+                ${escapeHTML(book.description)}
+            </p>
+
+            <div class="price">
+                $${Number(book.price).toFixed(2)}
+            </div>
+
+            <button
+                class="buy"
+                onclick="openBuy(${index})"
+            >
+                🛒 Buy This Book
+            </button>
+
+            <br>
+
+            <button
+                class="delete"
+                onclick="deleteBook(${index})"
+            >
+                🗑️ Delete
+            </button>
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+/* =================================================
+   PASSWORD
+================================================= */
+
+function showOwnerLogin() {
+
+    document.getElementById(
+        "passwordPanel"
+    ).style.display = "block";
+
+}
+
+
+function closePassword() {
+
+    document.getElementById(
+        "passwordPanel"
+    ).style.display = "none";
+
+}
+
+
+function checkPassword() {
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value;
+
+
+    const message =
+        document.getElementById(
+            "passwordMessage"
+        );
+
+
+    if (password === "book") {
+
+        message.className =
+            "message success";
+
+        message.textContent =
+            "✅ Password correct!";
+
+
+        document.getElementById(
+            "passwordPanel"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "addPanel"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "password"
+        ).value = "";
+
+    } else {
+
+        message.className =
+            "message error";
+
+        message.textContent =
+            "❌ Wrong password!";
+    }
+
+}
+
+
+/* =================================================
+   ADD BOOK
+================================================= */
+
+function addBook() {
+
+    const title =
+        document.getElementById(
+            "title"
+        ).value.trim();
+
+
+    const price =
+        Number(
+            document.getElementById(
+                "price"
+            ).value
+        );
+
+
+    const image =
+        document.getElementById(
+            "image"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "description"
+        ).value.trim();
+
+
+    const message =
+        document.getElementById(
+            "addMessage"
+        );
+
+
+    if (
+        !title ||
+        !image ||
+        price <= 0
+    ) {
+
+        message.className =
+            "message error";
+
+        message.textContent =
+            "❌ Please enter a title, price and cover.";
+
+        return;
+    }
+
+
+    books.push({
+
+        title: title,
+
+        price: price,
+
+        image: image,
+
+        description:
+            description ||
+            "An amazing book!"
+
+    });
+
+
+    saveBooks();
+
+    displayBooks();
+
+
+    document.getElementById(
+        "title"
+    ).value = "";
+
+    document.getElementById(
+        "price"
+    ).value = "";
+
+    document.getElementById(
+        "image"
+    ).value = "";
+
+    document.getElementById(
+        "description"
+    ).value = "";
+
+
+    message.className =
+        "message success";
+
+    message.textContent =
+        "✅ Book added successfully!";
+
+}
+
+
+function closeAddPanel() {
+
+    document.getElementById(
+        "addPanel"
+    ).style.display = "none";
+
+}
+
+
+/* =================================================
+   DELETE
+================================================= */
+
+function deleteBook(index) {
+
+    if (
+        !confirm(
+            "Are you sure you want to delete this book?"
+        )
+    ) {
+        return;
+    }
+
+
+    books.splice(index, 1);
+
+    saveBooks();
+
+    displayBooks();
+
+}
+
+
+/* =================================================
+   SAVE
+================================================= */
+
+function saveBooks() {
+
+    localStorage.setItem(
+        "loloBooks",
+        JSON.stringify(books)
+    );
+
+}
+
+
+/* =================================================
+   BUY
+================================================= */
+
+let selectedBook = null;
+
+
+function openBuy(index) {
+
+    selectedBook = books[index];
+
+
+    document.getElementById(
+        "buyModal"
+    ).style.display = "flex";
+
+
+    document.getElementById(
+        "selectedBook"
+    ).innerHTML = `
+
+        <strong>
+            ${escapeHTML(selectedBook.title)}
+        </strong>
+
+        <br><br>
+
+        Price:
+
+        <strong>
+            $${Number(selectedBook.price).toFixed(2)}
+        </strong>
+    `;
+
+
+    document.getElementById(
+        "orderMessage"
+    ).textContent = "";
+
+}
+
+
+function closeBuy() {
+
+    document.getElementById(
+        "buyModal"
+    ).style.display = "none";
+
+}
+
+
+/* =================================================
+   SEND ORDER TO YOUR EMAIL
+================================================= */
+
+document.getElementById(
+    "orderForm"
+).addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        if (!selectedBook) {
+            return;
+        }
+
+
+        const buyerName =
+            document.getElementById(
+                "buyerName"
+            ).value.trim();
+
+
+        const buyerEmail =
+            document.getElementById(
+                "buyerEmail"
+            ).value.trim();
+
+
+        const buyerMessage =
+            document.getElementById(
+                "buyerMessage"
+            ).value.trim();
+
+
+        const message =
+            document.getElementById(
+                "orderMessage"
+            );
+
+
+        message.className =
+            "message";
+
+
+        message.textContent =
+            "📧 Sending order...";
+
+
+        const templateParams = {
+
+            owner_email:
+                OWNER_EMAIL,
+
+            buyer_name:
+                buyerName,
+
+            buyer_email:
+                buyerEmail,
+
+            book_title:
+                selectedBook.title,
+
+            book_price:
+                "$" +
+                Number(
+                    selectedBook.price
+                ).toFixed(2),
+
+            buyer_message:
+                buyerMessage
+        };
+
+
+        emailjs.send(
+
+            EMAILJS_SERVICE_ID,
+
+            EMAILJS_TEMPLATE_ID,
+
+            templateParams
+
+        )
+
+        .then(function() {
+
+            message.className =
+                "message success";
+
+            message.textContent =
+                "✅ Order sent successfully!";
+
+            document.getElementById(
+                "orderForm"
+            ).reset();
+
+        })
+
+        .catch(function(error) {
+
+            console.error(error);
+
+            message.className =
+                "message error";
+
+            message.textContent =
+                "❌ Could not send the order. Check your EmailJS settings.";
+
+        });
+
+    }
+);
+
+
+/* =================================================
+   SECURITY
+================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* =================================================
+   START
+================================================= */
+
+displayBooks();
+
+</script>
+
+</body>
+</html>
