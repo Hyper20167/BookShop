@@ -18,8 +18,6 @@ body {
     color: #222;
 }
 
-/* HEADER */
-
 header {
     background: linear-gradient(135deg, #6b35d9, #aa70ff);
     color: white;
@@ -35,8 +33,6 @@ header h1 {
 header p {
     font-size: 19px;
 }
-
-/* NAVIGATION */
 
 nav {
     background: white;
@@ -59,8 +55,6 @@ nav button:hover {
     background: #5423b7;
 }
 
-/* MAIN */
-
 .container {
     width: 92%;
     max-width: 1200px;
@@ -73,15 +67,11 @@ nav button:hover {
     margin-bottom: 25px;
 }
 
-/* BOOK GRID */
-
 .books {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 25px;
 }
-
-/* BOOK CARD */
 
 .book {
     background: white;
@@ -120,8 +110,6 @@ nav button:hover {
     margin: 15px;
 }
 
-/* BUY */
-
 .buy {
     width: 90%;
     background: #25D366;
@@ -137,8 +125,6 @@ nav button:hover {
 .buy:hover {
     background: #1da851;
 }
-
-/* READ */
 
 .read {
     width: 90%;
@@ -157,8 +143,6 @@ nav button:hover {
     background: #5423b7;
 }
 
-/* DELETE */
-
 .delete {
     margin-top: 10px;
     background: #e53935;
@@ -168,8 +152,6 @@ nav button:hover {
     border-radius: 8px;
     cursor: pointer;
 }
-
-/* PANELS */
 
 .panel {
     display: none;
@@ -200,8 +182,6 @@ label {
     display: block;
 }
 
-/* UPLOAD */
-
 .file-upload {
     border: 3px dashed #9b70e8;
     border-radius: 15px;
@@ -225,8 +205,6 @@ label {
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,.15);
 }
-
-/* BUTTONS */
 
 .primary {
     background: #7139df;
@@ -252,8 +230,6 @@ label {
     cursor: pointer;
 }
 
-/* MESSAGES */
-
 .message {
     font-weight: bold;
 }
@@ -265,8 +241,6 @@ label {
 .error {
     color: red;
 }
-
-/* BOOK READER */
 
 #reader {
     display: none;
@@ -294,8 +268,6 @@ label {
     font-size: 18px;
 }
 
-/* FOOTER */
-
 footer {
     background: #222;
     color: white;
@@ -304,10 +276,7 @@ footer {
     margin-top: 60px;
 }
 
-/* MOBILE */
-
 @media(max-width:600px) {
-
     header h1 {
         font-size: 35px;
     }
@@ -317,76 +286,49 @@ footer {
     }
 }
 </style>
-
 </head>
 
 <body>
 
-<!-- HEADER -->
-
 <header>
-
-    <h1>
-        📚 Lolo's Bookstore
-    </h1>
-
-    <p>
-        Discover amazing books!
-    </p>
-
+    <h1>📚 Lolo's Bookstore</h1>
+    <p>Discover amazing books!</p>
 </header>
 
-
-<!-- NAVIGATION -->
-
 <nav>
-
     <button onclick="showOwnerLogin()">
         🔐 My Book Studio
     </button>
-
 </nav>
-
 
 <div class="container">
 
-
-<!-- PASSWORD PANEL -->
+<!-- PASSWORD -->
 
 <div id="passwordPanel" class="panel">
 
-    <h2>
-        🔐 Owner Area
-    </h2>
+    <h2>🔐 Owner Area</h2>
 
     <p>
-        Enter the password to open your Book Studio.
+        Enter the password to create a book.
     </p>
 
     <input
         id="password"
         type="password"
         placeholder="Password"
+        onkeydown="if(event.key==='Enter') checkPassword()"
     >
 
-    <button
-        class="primary"
-        onclick="checkPassword()"
-    >
+    <button class="primary" onclick="checkPassword()">
         Enter
     </button>
 
-    <button
-        class="close"
-        onclick="closePassword()"
-    >
+    <button class="close" onclick="closePassword()">
         Cancel
     </button>
 
-    <p
-        id="passwordMessage"
-        class="message"
-    ></p>
+    <p id="passwordMessage" class="message"></p>
 
 </div>
 
@@ -395,16 +337,11 @@ footer {
 
 <div id="studio" class="panel">
 
-    <h2>
-        ✍️ Create Your Own Book
-    </h2>
+    <h2>✍️ Create Your Own Book</h2>
 
     <p>
-        Make your book right here and add it to your bookstore!
+        Make your book and add it to your bookstore!
     </p>
-
-
-    <!-- BOOK TITLE -->
 
     <label>
         📖 Book Title
@@ -416,9 +353,6 @@ footer {
         placeholder="Enter your book title"
     >
 
-
-    <!-- AUTHOR -->
-
     <label>
         ✍️ Author
     </label>
@@ -428,9 +362,6 @@ footer {
         type="text"
         placeholder="Who made this book?"
     >
-
-
-    <!-- PRICE -->
 
     <label>
         💰 Book Price
@@ -443,9 +374,6 @@ footer {
         step="0.01"
         placeholder="Example: 5"
     >
-
-
-    <!-- COVER -->
 
     <label>
         🖼️ Upload Book Cover
@@ -472,9 +400,6 @@ footer {
 
     </div>
 
-
-    <!-- WRITE BOOK -->
-
     <label>
         ✍️ Write Your Book
     </label>
@@ -492,27 +417,15 @@ Chapter 2
 ..."
     ></textarea>
 
-
-    <!-- ADD BOOK -->
-
-    <button
-        class="primary"
-        onclick="createBook()"
-    >
+    <button class="primary" onclick="createBook()">
         📚 Add My Book
     </button>
 
-    <button
-        class="close"
-        onclick="closeStudio()"
-    >
-        Close
+    <button class="close" onclick="cancelStudio()">
+        Cancel
     </button>
 
-    <p
-        id="addMessage"
-        class="message"
-    ></p>
+    <p id="addMessage" class="message"></p>
 
 </div>
 
@@ -527,10 +440,7 @@ Chapter 2
 
     <p id="readerText"></p>
 
-    <button
-        class="close"
-        onclick="closeReader()"
-    >
+    <button class="close" onclick="closeReader()">
         ← Back to Store
     </button>
 
@@ -543,30 +453,18 @@ Chapter 2
     📚 Books For Sale
 </h2>
 
-<div
-    id="books"
-    class="books"
-></div>
-
+<div id="books" class="books"></div>
 
 </div>
 
 
-<!-- FOOTER -->
-
 <footer>
 
-    <h2>
-        📚 Lolo's Bookstore
-    </h2>
+    <h2>📚 Lolo's Bookstore</h2>
 
-    <p>
-        Made with ❤️
-    </p>
+    <p>Made with ❤️</p>
 
-    <p>
-        💬 Orders are made through WhatsApp
-    </p>
+    <p>💬 Orders are made through WhatsApp</p>
 
 </footer>
 
@@ -574,11 +472,10 @@ Chapter 2
 <script>
 
 /* =========================================
-   WHATSAPP NUMBER
+   WHATSAPP
 ========================================= */
 
-const WHATSAPP_NUMBER =
-    "201026103853";
+const WHATSAPP_NUMBER = "201026103853";
 
 
 /* =========================================
@@ -591,28 +488,20 @@ let books = JSON.parse(
 
     {
         title: "The Mystery Key",
-
         author: "Lolo",
-
         price: 5,
-
         image:
         "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800",
-
         text:
         "Once upon a time, two twins discovered a mysterious glowing key..."
     },
 
     {
         title: "Dragon Island",
-
         author: "Lolo",
-
         price: 7,
-
         image:
         "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800",
-
         text:
         "Far across the ocean was a mysterious island where dragons lived..."
     }
@@ -631,28 +520,17 @@ function displayBooks() {
 
     container.innerHTML = "";
 
-
     if (books.length === 0) {
 
         container.innerHTML = `
-
             <div style="text-align:center;">
-
-                <h2>
-                    📚 No books yet!
-                </h2>
-
-                <p>
-                    Create your first book!
-                </p>
-
+                <h2>📚 No books yet!</h2>
+                <p>Create your first book!</p>
             </div>
-
         `;
 
         return;
     }
-
 
     books.forEach((book, index) => {
 
@@ -660,7 +538,6 @@ function displayBooks() {
             document.createElement("div");
 
         card.className = "book";
-
 
         card.innerHTML = `
 
@@ -704,19 +581,16 @@ function displayBooks() {
             >
                 🗑️ Delete
             </button>
-
         `;
-
 
         container.appendChild(card);
 
     });
-
 }
 
 
 /* =========================================
-   OWNER LOGIN
+   PASSWORD
 ========================================= */
 
 function showOwnerLogin() {
@@ -725,6 +599,9 @@ function showOwnerLogin() {
         "passwordPanel"
     ).style.display = "block";
 
+    document.getElementById(
+        "password"
+    ).focus();
 }
 
 
@@ -744,7 +621,6 @@ function checkPassword() {
             "password"
         ).value;
 
-
     const message =
         document.getElementById(
             "passwordMessage"
@@ -753,27 +629,19 @@ function checkPassword() {
 
     if (password === "book") {
 
-        message.className =
-            "message success";
-
-        message.textContent =
-            "✅ Correct!";
-
-
         document.getElementById(
             "passwordPanel"
         ).style.display = "none";
-
 
         document.getElementById(
             "studio"
         ).style.display = "block";
 
-
         document.getElementById(
             "password"
         ).value = "";
 
+        message.textContent = "";
 
     } else {
 
@@ -784,7 +652,6 @@ function checkPassword() {
             "❌ Wrong password!";
 
     }
-
 }
 
 
@@ -799,26 +666,20 @@ function previewCover() {
             "image"
         ).files[0];
 
-
     const preview =
         document.getElementById(
             "coverPreview"
         );
 
-
     if (!file) {
 
         preview.style.display = "none";
-
         return;
     }
 
-
     if (!file.type.startsWith("image/")) {
 
-        alert(
-            "Please choose an image file."
-        );
+        alert("Please choose an image file.");
 
         document.getElementById(
             "image"
@@ -829,10 +690,8 @@ function previewCover() {
         return;
     }
 
-
     const reader =
         new FileReader();
-
 
     reader.onload =
         function(event) {
@@ -842,12 +701,9 @@ function previewCover() {
 
             preview.style.display =
                 "block";
-
         };
 
-
     reader.readAsDataURL(file);
-
 }
 
 
@@ -862,12 +718,10 @@ function createBook() {
             "title"
         ).value.trim();
 
-
     const author =
         document.getElementById(
             "author"
         ).value.trim();
-
 
     const price =
         Number(
@@ -876,18 +730,15 @@ function createBook() {
             ).value
         );
 
-
     const imageFile =
         document.getElementById(
             "image"
         ).files[0];
 
-
     const bookText =
         document.getElementById(
             "bookText"
         ).value.trim();
-
 
     const message =
         document.getElementById(
@@ -897,11 +748,10 @@ function createBook() {
 
     if (!title) {
 
-        message.className =
-            "message error";
-
-        message.textContent =
-            "❌ Give your book a title.";
+        showError(
+            message,
+            "❌ Give your book a title."
+        );
 
         return;
     }
@@ -909,11 +759,10 @@ function createBook() {
 
     if (!author) {
 
-        message.className =
-            "message error";
-
-        message.textContent =
-            "❌ Enter the author's name.";
+        showError(
+            message,
+            "❌ Enter the author's name."
+        );
 
         return;
     }
@@ -921,11 +770,10 @@ function createBook() {
 
     if (price <= 0) {
 
-        message.className =
-            "message error";
-
-        message.textContent =
-            "❌ Give your book a price.";
+        showError(
+            message,
+            "❌ Give your book a price."
+        );
 
         return;
     }
@@ -933,11 +781,10 @@ function createBook() {
 
     if (!imageFile) {
 
-        message.className =
-            "message error";
-
-        message.textContent =
-            "❌ Upload a book cover.";
+        showError(
+            message,
+            "❌ Upload a book cover."
+        );
 
         return;
     }
@@ -945,11 +792,10 @@ function createBook() {
 
     if (!bookText) {
 
-        message.className =
-            "message error";
-
-        message.textContent =
-            "❌ Write your book.";
+        showError(
+            message,
+            "❌ Write your book."
+        );
 
         return;
     }
@@ -984,61 +830,115 @@ function createBook() {
             displayBooks();
 
 
-            /* CLEAR FORM */
+            /* CLEAR THE FORM */
 
             document.getElementById(
                 "title"
             ).value = "";
 
-
             document.getElementById(
                 "author"
             ).value = "";
-
 
             document.getElementById(
                 "price"
             ).value = "";
 
-
             document.getElementById(
                 "image"
             ).value = "";
 
-
             document.getElementById(
                 "bookText"
             ).value = "";
-
 
             document.getElementById(
                 "coverPreview"
             ).style.display = "none";
 
 
+            /*
+             IMPORTANT:
+             CLOSE THE BOOK STUDIO
+             AFTER ONE BOOK IS ADDED.
+             */
+
+            document.getElementById(
+                "studio"
+            ).style.display = "none";
+
+
             message.className =
                 "message success";
 
-
             message.textContent =
-                "🎉 Your book has been added to the bookstore!";
+                "🎉 Your book was added!";
+
+
+            /*
+             The password is NOT saved.
+             To create another book,
+             the user must enter the
+             password again.
+             */
+
+            alert(
+                "🎉 Your book has been added!\n\n🔐 Enter the password again if you want to make another book."
+            );
 
         };
 
 
     reader.readAsDataURL(imageFile);
-
 }
 
 
 /* =========================================
-   CLOSE STUDIO
+   ERROR MESSAGE
 ========================================= */
 
-function closeStudio() {
+function showError(element, text) {
+
+    element.className =
+        "message error";
+
+    element.textContent =
+        text;
+}
+
+
+/* =========================================
+   CANCEL STUDIO
+========================================= */
+
+function cancelStudio() {
 
     document.getElementById(
         "studio"
+    ).style.display = "none";
+
+    document.getElementById(
+        "title"
+    ).value = "";
+
+    document.getElementById(
+        "author"
+    ).value = "";
+
+    document.getElementById(
+        "price"
+    ).value = "";
+
+    document.getElementById(
+        "image"
+    ).value = "";
+
+    document.getElementById(
+        "bookText"
+    ).value = "";
+
+    document.getElementById(
+        "coverPreview"
     ).style.display = "none";
 
 }
@@ -1053,12 +953,10 @@ function readBook(index) {
     const book =
         books[index];
 
-
     document.getElementById(
         "readerTitle"
     ).textContent =
         book.title;
-
 
     document.getElementById(
         "readerAuthor"
@@ -1066,36 +964,30 @@ function readBook(index) {
         "✍️ By: " +
         (book.author || "Unknown");
 
-
     document.getElementById(
         "readerText"
     ).textContent =
         book.text;
-
 
     document.getElementById(
         "reader"
     ).style.display =
         "block";
 
-
     document.getElementById(
         "books"
     ).style.display =
         "none";
-
 
     document.querySelector(
         ".section-title"
     ).style.display =
         "none";
 
-
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
-
 }
 
 
@@ -1106,18 +998,15 @@ function closeReader() {
     ).style.display =
         "none";
 
-
     document.getElementById(
         "books"
     ).style.display =
         "grid";
 
-
     document.querySelector(
         ".section-title"
     ).style.display =
         "block";
-
 }
 
 
@@ -1132,17 +1021,14 @@ function deleteBook(index) {
             "Are you sure you want to delete this book?"
         )
     ) {
-
         return;
     }
-
 
     books.splice(index, 1);
 
     saveBooks();
 
     displayBooks();
-
 }
 
 
@@ -1156,19 +1042,17 @@ function saveBooks() {
         "loloBooks",
         JSON.stringify(books)
     );
-
 }
 
 
 /* =========================================
-   WHATSAPP ORDER
+   WHATSAPP
 ========================================= */
 
 function buyBook(index) {
 
     const book =
         books[index];
-
 
     const message =
 
@@ -1195,24 +1079,21 @@ Hello! I would like to buy this book.`;
         whatsappURL,
         "_blank"
     );
-
 }
 
 
 /* =========================================
-   SAFETY
+   ESCAPE HTML
 ========================================= */
 
 function escapeHTML(value) {
 
     return String(value)
-
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 }
 
 
