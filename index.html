@@ -1128,6 +1128,15 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+async function loadBooksFromFirebase() {
+    const booksSnapshot = await getDocs(collection(db, "books"));
+
+    booksSnapshot.forEach((bookDoc) => {
+        console.log("📚 Book found:", bookDoc.data());
+    });
+}
+
+loadBooksFromFirebase();
 
 console.log("🔥 Firebase connected!");
 </script>
