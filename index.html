@@ -1009,7 +1009,7 @@ function deleteBook(index) {
    SAVE BOOKS
 ========================================= */
 
-async function saveBookToFirebase(book) {
+window.saveBookToFirebase = async function(book) {
 
     try {
 
@@ -1044,8 +1044,7 @@ async function saveBookToFirebase(book) {
 
         return null;
     }
-}
-
+};
 /* =========================================
    WHATSAPP
 ========================================= */
@@ -1174,7 +1173,42 @@ async function loadBooksFromFirebase() {
 }
 
 loadBooksFromFirebase();
+window.saveBookToFirebase = async function(book) {
 
+    try {
+
+        const docRef = await addDoc(
+            collection(db, "books"),
+            {
+                title: book.title,
+                author: book.author,
+                price: Number(book.price),
+                text: book.text,
+                image: book.image
+            }
+        );
+
+        console.log(
+            "📚 Book saved!",
+            docRef.id
+        );
+
+        return docRef.id;
+
+    } catch (error) {
+
+        console.error(
+            "❌ Could not save book:",
+            error
+        );
+
+        alert(
+            "❌ The book could not be saved."
+        );
+
+        return null;
+    }
+};
 console.log("🔥 Firebase connected!");
 </script>
 </body>
