@@ -1104,6 +1104,32 @@ function escapeHTML(value) {
 displayBooks();
 
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyA4yrEl32I9HVGt7nLy0Cd6XuRvk3pWgEo",
+  authDomain: "lolo-s-bookstore.firebaseapp.com",
+  projectId: "lolo-s-bookstore",
+  storageBucket: "lolo-s-bookstore.firebasestorage.app",
+  messagingSenderId: "610405320877",
+  appId: "1:610405320877:web:67b85d346f366793c31e24",
+  measurementId: "G-R0QKJMTMTF"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("🔥 Firebase connected!");
+</script>
 </body>
 </html>
