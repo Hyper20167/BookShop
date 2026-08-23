@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Lolo's Bookstore 📚</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -16,6 +19,8 @@ body {
     background: linear-gradient(135deg, #eee5ff, #faf7ff);
     color: #222;
 }
+
+/* HEADER */
 
 header {
     background: linear-gradient(135deg, #6b35d9, #aa70ff);
@@ -33,6 +38,8 @@ header p {
     font-size: 19px;
 }
 
+/* NAV */
+
 nav {
     background: white;
     padding: 15px;
@@ -40,30 +47,35 @@ nav {
     box-shadow: 0 3px 12px rgba(0,0,0,.1);
 }
 
-button {
-    cursor: pointer;
-}
-
-nav button,
-.primary {
+nav button {
     background: #7139df;
     color: white;
     border: none;
     padding: 13px 22px;
     border-radius: 11px;
     font-weight: bold;
+    cursor: pointer;
 }
 
-nav button:hover,
-.primary:hover {
+nav button:hover {
     background: #5423b7;
 }
+
+/* MAIN */
 
 .container {
     width: 92%;
     max-width: 1200px;
     margin: 30px auto;
 }
+
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+/* BOOKS */
 
 .books {
     display: grid;
@@ -108,20 +120,25 @@ nav button:hover,
     margin: 15px;
 }
 
+/* BUY */
+
 .buy {
     width: 90%;
-    background: #7139df;
+    background: #25D366;
     color: white;
     border: none;
     padding: 13px;
     border-radius: 11px;
     font-size: 16px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .buy:hover {
-    background: #5423b7;
+    background: #1da851;
 }
+
+/* DELETE */
 
 .delete {
     margin-top: 10px;
@@ -130,7 +147,10 @@ nav button:hover,
     border: none;
     padding: 8px 13px;
     border-radius: 8px;
+    cursor: pointer;
 }
+
+/* PANELS */
 
 .panel {
     display: none;
@@ -152,12 +172,26 @@ textarea {
 }
 
 textarea {
-    min-height: 100px;
+    min-height: 160px;
     resize: vertical;
 }
 
 label {
     font-weight: bold;
+}
+
+.primary {
+    background: #7139df;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary:hover {
+    background: #5423b7;
 }
 
 .close {
@@ -167,6 +201,7 @@ label {
     padding: 11px 18px;
     border-radius: 10px;
     margin-left: 5px;
+    cursor: pointer;
 }
 
 .message {
@@ -181,35 +216,28 @@ label {
     color: red;
 }
 
-#buyModal {
+/* BOOK READER */
+
+#reader {
     display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.7);
-    z-index: 999;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.buyBox {
     background: white;
-    width: 100%;
-    max-width: 520px;
-    padding: 30px;
+    padding: 35px;
     border-radius: 20px;
-    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+    margin-bottom: 30px;
 }
 
-.closeModal {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    border: none;
-    background: #eee;
-    padding: 8px 12px;
-    border-radius: 8px;
+#reader h2 {
+    color: #7139df;
 }
+
+#readerText {
+    white-space: pre-wrap;
+    line-height: 1.8;
+    font-size: 18px;
+}
+
+/* FOOTER */
 
 footer {
     background: #222;
@@ -219,7 +247,10 @@ footer {
     margin-top: 60px;
 }
 
+/* MOBILE */
+
 @media(max-width:600px) {
+
     header h1 {
         font-size: 35px;
     }
@@ -227,232 +258,254 @@ footer {
     .book img {
         height: 260px;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
+<!-- HEADER -->
+
 <header>
+
     <h1>📚 Lolo's Bookstore</h1>
-    <p>Find your next favorite book!</p>
+
+    <p>
+        Discover amazing books!
+    </p>
+
 </header>
 
+
+<!-- NAVIGATION -->
+
 <nav>
+
     <button onclick="showOwnerLogin()">
-        🔐 Add a Book
+        🔐 My Book Studio
     </button>
+
 </nav>
+
 
 <div class="container">
 
-    <!-- OWNER PASSWORD -->
 
-    <div id="passwordPanel" class="panel">
+<!-- PASSWORD -->
 
-        <h2>🔐 Owner Area</h2>
+<div
+    id="passwordPanel"
+    class="panel"
+>
 
-        <p>Enter the password to add a book.</p>
+    <h2>🔐 Owner Area</h2>
 
-        <input
-            id="password"
-            type="password"
-            placeholder="Password"
-        >
+    <p>
+        Enter your password.
+    </p>
 
-        <button
-            class="primary"
-            onclick="checkPassword()"
-        >
-            Enter
-        </button>
+    <input
+        id="password"
+        type="password"
+        placeholder="Password"
+    >
 
-        <button
-            class="close"
-            onclick="closePassword()"
-        >
-            Cancel
-        </button>
+    <button
+        class="primary"
+        onclick="checkPassword()"
+    >
+        Enter
+    </button>
 
-        <p id="passwordMessage" class="message"></p>
+    <button
+        class="close"
+        onclick="closePassword()"
+    >
+        Cancel
+    </button>
 
-    </div>
-
-
-    <!-- ADD BOOK -->
-
-    <div id="addPanel" class="panel">
-
-        <h2>📖 Add a New Book</h2>
-
-        <label>Book Title</label>
-
-        <input
-            id="title"
-            type="text"
-            placeholder="Book title"
-        >
-
-        <label>Price</label>
-
-        <input
-            id="price"
-            type="number"
-            min="0"
-            step="0.01"
-            placeholder="Example: 5"
-        >
-
-        <label>Book Cover URL</label>
-
-        <input
-            id="image"
-            type="url"
-            placeholder="Paste your cover image URL"
-        >
-
-        <label>Description</label>
-
-        <textarea
-            id="description"
-            placeholder="Write about your book..."
-        ></textarea>
-
-        <button
-            class="primary"
-            onclick="addBook()"
-        >
-            ➕ Add Book
-        </button>
-
-        <button
-            class="close"
-            onclick="closeAddPanel()"
-        >
-            Close
-        </button>
-
-        <p id="addMessage" class="message"></p>
-
-    </div>
-
-
-    <h2 style="text-align:center;">
-        📚 Books For Sale
-    </h2>
-
-    <div id="books" class="books"></div>
+    <p
+        id="passwordMessage"
+        class="message"
+    ></p>
 
 </div>
 
 
-<!-- BUY WINDOW -->
+<!-- BOOK STUDIO -->
 
-<div id="buyModal">
+<div
+    id="studio"
+    class="panel"
+>
 
-    <div class="buyBox">
+    <h2>✍️ Create Your Own Book</h2>
 
-        <button
-            class="closeModal"
-            onclick="closeBuy()"
-        >
-            ✕
-        </button>
+    <p>
+        Write your book here and add it to your bookstore!
+    </p>
 
-        <h2>🛒 Buy This Book</h2>
 
-        <p id="selectedBook"></p>
+    <label>
+        📖 Book Title
+    </label>
 
-        <form id="orderForm">
+    <input
+        id="title"
+        type="text"
+        placeholder="Enter your book title"
+    >
 
-            <label>Your Name</label>
 
-            <input
-                id="buyerName"
-                type="text"
-                placeholder="Your name"
-                required
-            >
+    <label>
+        💰 Price
+    </label>
 
-            <label>Your Email</label>
+    <input
+        id="price"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="Example: 5"
+    >
 
-            <input
-                id="buyerEmail"
-                type="email"
-                placeholder="your@email.com"
-                required
-            >
 
-            <label>Message</label>
+    <label>
+        🖼️ Book Cover URL
+    </label>
 
-            <textarea
-                id="buyerMessage"
-                placeholder="Message for the bookstore..."
-            ></textarea>
+    <input
+        id="image"
+        type="url"
+        placeholder="Paste your cover image URL"
+    >
 
-            <button
-                class="primary"
-                type="submit"
-            >
-                📧 Send Order
-            </button>
 
-        </form>
+    <label>
+        📝 Short Description
+    </label>
 
-        <p id="orderMessage" class="message"></p>
+    <textarea
+        id="description"
+        placeholder="Write a short description of your book..."
+    ></textarea>
 
-    </div>
+
+    <label>
+        ✍️ Write Your Book
+    </label>
+
+    <textarea
+        id="bookText"
+        placeholder="Start writing your book here...
+
+Chapter 1
+
+Once upon a time...
+
+Chapter 2
+
+..."
+        style="min-height:300px;"
+    ></textarea>
+
+
+    <button
+        class="primary"
+        onclick="createBook()"
+    >
+        📚 Add My Book
+    </button>
+
+
+    <button
+        class="close"
+        onclick="closeStudio()"
+    >
+        Close
+    </button>
+
+
+    <p
+        id="addMessage"
+        class="message"
+    ></p>
 
 </div>
 
+
+<!-- BOOK READER -->
+
+<div id="reader">
+
+    <h2 id="readerTitle"></h2>
+
+    <p id="readerText"></p>
+
+    <button
+        class="close"
+        onclick="closeReader()"
+    >
+        ← Back to Store
+    </button>
+
+</div>
+
+
+<!-- STORE -->
+
+<h2 class="section-title">
+    📚 Books For Sale
+</h2>
+
+
+<div
+    id="books"
+    class="books"
+></div>
+
+
+</div>
+
+
+<!-- FOOTER -->
 
 <footer>
 
-    <h2>📚 Lolo's Bookstore</h2>
-
-    <p>Thank you for visiting!</p>
+    <h2>
+        📚 Lolo's Bookstore
+    </h2>
 
     <p>
-        Orders are sent to:
-        <strong>lolopurple9@gmail.com</strong>
+        Made with ❤️
+    </p>
+
+    <p>
+        💬 Orders are made through WhatsApp
     </p>
 
 </footer>
 
 
-<!-- EMAILJS -->
-
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
 <script>
 
-/* =================================================
-   YOUR EMAIL
-================================================= */
 
-const OWNER_EMAIL = "lolopurple9@gmail.com";
+/* =========================================
+   WHATSAPP
+========================================= */
 
-
-/* =================================================
-   EMAILJS SETTINGS
-
-   Replace these three values with the values
-   from your EmailJS account.
-================================================= */
-
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+const WHATSAPP_NUMBER =
+    "201026103853";
 
 
-emailjs.init({
-    publicKey: EMAILJS_PUBLIC_KEY
-});
-
-
-/* =================================================
-   BOOKS
-================================================= */
+/* =========================================
+   BOOK DATA
+========================================= */
 
 let books = JSON.parse(
     localStorage.getItem("loloBooks")
@@ -460,28 +513,41 @@ let books = JSON.parse(
 
     {
         title: "The Mystery Key",
+
         price: 5,
+
         image:
         "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800",
+
         description:
-        "A mysterious adventure about twins who discover a glowing key."
+        "A mysterious adventure about twins who discover a glowing key.",
+
+        text:
+        "Once upon a time, two twins discovered a mysterious glowing key..."
     },
+
 
     {
         title: "Dragon Island",
+
         price: 7,
+
         image:
         "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800",
+
         description:
-        "An exciting adventure on a mysterious island."
+        "An exciting adventure on a mysterious island.",
+
+        text:
+        "Far across the ocean was a mysterious island where dragons lived..."
     }
 
 ];
 
 
-/* =================================================
-   SHOW BOOKS
-================================================= */
+/* =========================================
+   DISPLAY BOOKS
+========================================= */
 
 function displayBooks() {
 
@@ -494,10 +560,19 @@ function displayBooks() {
     if (books.length === 0) {
 
         container.innerHTML = `
+
             <div style="text-align:center;">
-                <h2>📚 No books yet!</h2>
-                <p>Come back soon.</p>
+
+                <h2>
+                    📚 No books yet!
+                </h2>
+
+                <p>
+                    Create your first book!
+                </p>
+
             </div>
+
         `;
 
         return;
@@ -522,33 +597,62 @@ function displayBooks() {
                 "
             >
 
+
             <h2>
                 ${escapeHTML(book.title)}
             </h2>
 
+
             <p class="description">
+
                 ${escapeHTML(book.description)}
+
             </p>
 
+
             <div class="price">
+
                 $${Number(book.price).toFixed(2)}
+
             </div>
+
 
             <button
                 class="buy"
-                onclick="openBuy(${index})"
+                onclick="buyBook(${index})"
             >
-                🛒 Buy This Book
+
+                💬 Buy on WhatsApp
+
             </button>
 
+
             <br>
+
+
+            <button
+                class="primary"
+                style="margin-top:10px;"
+                onclick="readBook(${index})"
+            >
+
+                📖 Read Book
+
+            </button>
+
+
+            <br>
+
 
             <button
                 class="delete"
                 onclick="deleteBook(${index})"
             >
+
                 🗑️ Delete
+
             </button>
+
         `;
 
 
@@ -559,9 +663,9 @@ function displayBooks() {
 }
 
 
-/* =================================================
-   PASSWORD
-================================================= */
+/* =========================================
+   OWNER LOGIN
+========================================= */
 
 function showOwnerLogin() {
 
@@ -601,7 +705,7 @@ function checkPassword() {
             "message success";
 
         message.textContent =
-            "✅ Password correct!";
+            "✅ Correct!";
 
 
         document.getElementById(
@@ -610,13 +714,14 @@ function checkPassword() {
 
 
         document.getElementById(
-            "addPanel"
+            "studio"
         ).style.display = "block";
 
 
         document.getElementById(
             "password"
         ).value = "";
+
 
     } else {
 
@@ -625,16 +730,17 @@ function checkPassword() {
 
         message.textContent =
             "❌ Wrong password!";
+
     }
 
 }
 
 
-/* =================================================
-   ADD BOOK
-================================================= */
+/* =========================================
+   CREATE BOOK
+========================================= */
 
-function addBook() {
+function createBook() {
 
     const title =
         document.getElementById(
@@ -662,23 +768,61 @@ function addBook() {
         ).value.trim();
 
 
+    const text =
+        document.getElementById(
+            "bookText"
+        ).value.trim();
+
+
     const message =
         document.getElementById(
             "addMessage"
         );
 
 
-    if (
-        !title ||
-        !image ||
-        price <= 0
-    ) {
+    if (!title) {
 
         message.className =
             "message error";
 
         message.textContent =
-            "❌ Please enter a title, price and cover.";
+            "❌ Give your book a title.";
+
+        return;
+    }
+
+
+    if (price <= 0) {
+
+        message.className =
+            "message error";
+
+        message.textContent =
+            "❌ Give your book a price.";
+
+        return;
+    }
+
+
+    if (!image) {
+
+        message.className =
+            "message error";
+
+        message.textContent =
+            "❌ Add a cover image URL.";
+
+        return;
+    }
+
+
+    if (!text) {
+
+        message.className =
+            "message error";
+
+        message.textContent =
+            "❌ Write something in your book.";
 
         return;
     }
@@ -694,7 +838,9 @@ function addBook() {
 
         description:
             description ||
-            "An amazing book!"
+            "An amazing new book!",
+
+        text: text
 
     });
 
@@ -704,20 +850,30 @@ function addBook() {
     displayBooks();
 
 
+    /* CLEAR FORM */
+
     document.getElementById(
         "title"
     ).value = "";
+
 
     document.getElementById(
         "price"
     ).value = "";
 
+
     document.getElementById(
         "image"
     ).value = "";
 
+
     document.getElementById(
         "description"
+    ).value = "";
+
+
+    document.getElementById(
+        "bookText"
     ).value = "";
 
 
@@ -725,23 +881,86 @@ function addBook() {
         "message success";
 
     message.textContent =
-        "✅ Book added successfully!";
+        "🎉 Your book has been added to the bookstore!";
 
 }
 
 
-function closeAddPanel() {
+function closeStudio() {
 
     document.getElementById(
-        "addPanel"
+        "studio"
     ).style.display = "none";
 
 }
 
 
-/* =================================================
+/* =========================================
+   READ BOOK
+========================================= */
+
+function readBook(index) {
+
+    const book = books[index];
+
+
+    document.getElementById(
+        "readerTitle"
+    ).textContent =
+        book.title;
+
+
+    document.getElementById(
+        "readerText"
+    ).textContent =
+        book.text;
+
+
+    document.getElementById(
+        "reader"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "books"
+    ).style.display = "none";
+
+
+    document.querySelector(
+        ".section-title"
+    ).style.display = "none";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+function closeReader() {
+
+    document.getElementById(
+        "reader"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "books"
+    ).style.display = "grid";
+
+
+    document.querySelector(
+        ".section-title"
+    ).style.display = "block";
+
+}
+
+
+/* =========================================
    DELETE
-================================================= */
+========================================= */
 
 function deleteBook(index) {
 
@@ -750,7 +969,9 @@ function deleteBook(index) {
             "Are you sure you want to delete this book?"
         )
     ) {
+
         return;
+
     }
 
 
@@ -763,9 +984,9 @@ function deleteBook(index) {
 }
 
 
-/* =================================================
+/* =========================================
    SAVE
-================================================= */
+========================================= */
 
 function saveBooks() {
 
@@ -777,191 +998,82 @@ function saveBooks() {
 }
 
 
-/* =================================================
-   BUY
-================================================= */
+/* =========================================
+   WHATSAPP ORDER
+========================================= */
 
-let selectedBook = null;
+function buyBook(index) {
 
-
-function openBuy(index) {
-
-    selectedBook = books[index];
+    const book =
+        books[index];
 
 
-    document.getElementById(
-        "buyModal"
-    ).style.display = "flex";
+    const message =
+
+`📚 BOOK ORDER
+
+Book: ${book.title}
+
+Price: $${Number(book.price).toFixed(2)}
+
+Hello! I would like to buy this book.`;
 
 
-    document.getElementById(
-        "selectedBook"
-    ).innerHTML = `
+    const whatsappURL =
 
-        <strong>
-            ${escapeHTML(selectedBook.title)}
-        </strong>
-
-        <br><br>
-
-        Price:
-
-        <strong>
-            $${Number(selectedBook.price).toFixed(2)}
-        </strong>
-    `;
+        "https://wa.me/" +
+        WHATSAPP_NUMBER +
+        "?text=" +
+        encodeURIComponent(message);
 
 
-    document.getElementById(
-        "orderMessage"
-    ).textContent = "";
+    window.open(
+        whatsappURL,
+        "_blank"
+    );
 
 }
 
 
-function closeBuy() {
-
-    document.getElementById(
-        "buyModal"
-    ).style.display = "none";
-
-}
-
-
-/* =================================================
-   SEND ORDER TO YOUR EMAIL
-================================================= */
-
-document.getElementById(
-    "orderForm"
-).addEventListener(
-    "submit",
-    function(event) {
-
-        event.preventDefault();
-
-
-        if (!selectedBook) {
-            return;
-        }
-
-
-        const buyerName =
-            document.getElementById(
-                "buyerName"
-            ).value.trim();
-
-
-        const buyerEmail =
-            document.getElementById(
-                "buyerEmail"
-            ).value.trim();
-
-
-        const buyerMessage =
-            document.getElementById(
-                "buyerMessage"
-            ).value.trim();
-
-
-        const message =
-            document.getElementById(
-                "orderMessage"
-            );
-
-
-        message.className =
-            "message";
-
-
-        message.textContent =
-            "📧 Sending order...";
-
-
-        const templateParams = {
-
-            owner_email:
-                OWNER_EMAIL,
-
-            buyer_name:
-                buyerName,
-
-            buyer_email:
-                buyerEmail,
-
-            book_title:
-                selectedBook.title,
-
-            book_price:
-                "$" +
-                Number(
-                    selectedBook.price
-                ).toFixed(2),
-
-            buyer_message:
-                buyerMessage
-        };
-
-
-        emailjs.send(
-
-            EMAILJS_SERVICE_ID,
-
-            EMAILJS_TEMPLATE_ID,
-
-            templateParams
-
-        )
-
-        .then(function() {
-
-            message.className =
-                "message success";
-
-            message.textContent =
-                "✅ Order sent successfully!";
-
-            document.getElementById(
-                "orderForm"
-            ).reset();
-
-        })
-
-        .catch(function(error) {
-
-            console.error(error);
-
-            message.className =
-                "message error";
-
-            message.textContent =
-                "❌ Could not send the order. Check your EmailJS settings.";
-
-        });
-
-    }
-);
-
-
-/* =================================================
+/* =========================================
    SECURITY
-================================================= */
+========================================= */
 
 function escapeHTML(value) {
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
 
-/* =================================================
+/* =========================================
    START
-================================================= */
+========================================= */
 
 displayBooks();
 
