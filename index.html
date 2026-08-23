@@ -754,16 +754,16 @@ async function createBook() {
     }
 
 
-    if (!imageFile) {
+if (!imageFile || !imageFile.type.startsWith("image/")) {
 
-        showError(
-            message,
-            "❌ Upload a book cover."
-        );
+    message.className =
+        "message error";
 
-        return;
-    }
+    message.textContent =
+        "❌ Please choose an image for your book cover.";
 
+    return;
+}
 
     if (!bookText) {
 
