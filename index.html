@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Lolo's Bookstore 📚</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -79,8 +77,7 @@ nav button:hover {
 
 .books {
     display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 25px;
 }
 
@@ -107,7 +104,13 @@ nav button:hover {
 }
 
 .book h2 {
-    margin: 15px 0 8px;
+    margin: 15px 0 6px;
+}
+
+.author {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .price {
@@ -279,6 +282,12 @@ label {
     font-size: 32px;
 }
 
+#readerAuthor {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
 #readerText {
     white-space: pre-wrap;
     line-height: 1.8;
@@ -306,16 +315,12 @@ footer {
     .book img {
         height: 260px;
     }
-
 }
-
 </style>
 
 </head>
 
-
 <body>
-
 
 <!-- HEADER -->
 
@@ -348,10 +353,7 @@ footer {
 
 <!-- PASSWORD PANEL -->
 
-<div
-    id="passwordPanel"
-    class="panel"
->
+<div id="passwordPanel" class="panel">
 
     <h2>
         🔐 Owner Area
@@ -391,10 +393,7 @@ footer {
 
 <!-- BOOK STUDIO -->
 
-<div
-    id="studio"
-    class="panel"
->
+<div id="studio" class="panel">
 
     <h2>
         ✍️ Create Your Own Book
@@ -415,6 +414,19 @@ footer {
         id="title"
         type="text"
         placeholder="Enter your book title"
+    >
+
+
+    <!-- AUTHOR -->
+
+    <label>
+        ✍️ Author
+    </label>
+
+    <input
+        id="author"
+        type="text"
+        placeholder="Who made this book?"
     >
 
 
@@ -490,14 +502,12 @@ Chapter 2
         📚 Add My Book
     </button>
 
-
     <button
         class="close"
         onclick="closeStudio()"
     >
         Close
     </button>
-
 
     <p
         id="addMessage"
@@ -512,6 +522,8 @@ Chapter 2
 <div id="reader">
 
     <h2 id="readerTitle"></h2>
+
+    <div id="readerAuthor"></div>
 
     <p id="readerText"></p>
 
@@ -561,7 +573,6 @@ Chapter 2
 
 <script>
 
-
 /* =========================================
    WHATSAPP NUMBER
 ========================================= */
@@ -581,6 +592,8 @@ let books = JSON.parse(
     {
         title: "The Mystery Key",
 
+        author: "Lolo",
+
         price: 5,
 
         image:
@@ -590,9 +603,10 @@ let books = JSON.parse(
         "Once upon a time, two twins discovered a mysterious glowing key..."
     },
 
-
     {
         title: "Dragon Island",
+
+        author: "Lolo",
 
         price: 7,
 
@@ -661,6 +675,10 @@ function displayBooks() {
             <h2>
                 ${escapeHTML(book.title)}
             </h2>
+
+            <div class="author">
+                ✍️ By: ${escapeHTML(book.author || "Unknown")}
+            </div>
 
             <div class="price">
                 $${Number(book.price).toFixed(2)}
@@ -793,7 +811,6 @@ function previewCover() {
         preview.style.display = "none";
 
         return;
-
     }
 
 
@@ -810,7 +827,6 @@ function previewCover() {
         preview.style.display = "none";
 
         return;
-
     }
 
 
@@ -847,6 +863,12 @@ function createBook() {
         ).value.trim();
 
 
+    const author =
+        document.getElementById(
+            "author"
+        ).value.trim();
+
+
     const price =
         Number(
             document.getElementById(
@@ -880,6 +902,18 @@ function createBook() {
 
         message.textContent =
             "❌ Give your book a title.";
+
+        return;
+    }
+
+
+    if (!author) {
+
+        message.className =
+            "message error";
+
+        message.textContent =
+            "❌ Enter the author's name.";
 
         return;
     }
@@ -932,6 +966,8 @@ function createBook() {
 
                 title: title,
 
+                author: author,
+
                 price: price,
 
                 image:
@@ -952,6 +988,11 @@ function createBook() {
 
             document.getElementById(
                 "title"
+            ).value = "";
+
+
+            document.getElementById(
+                "author"
             ).value = "";
 
 
@@ -1017,6 +1058,13 @@ function readBook(index) {
         "readerTitle"
     ).textContent =
         book.title;
+
+
+    document.getElementById(
+        "readerAuthor"
+    ).textContent =
+        "✍️ By: " +
+        (book.author || "Unknown");
 
 
     document.getElementById(
@@ -1086,7 +1134,6 @@ function deleteBook(index) {
     ) {
 
         return;
-
     }
 
 
@@ -1129,6 +1176,8 @@ function buyBook(index) {
 
 Book: ${book.title}
 
+Author: ${book.author}
+
 Price: $${Number(book.price).toFixed(2)}
 
 Hello! I would like to buy this book.`;
@@ -1158,30 +1207,11 @@ function escapeHTML(value) {
 
     return String(value)
 
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
