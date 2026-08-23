@@ -754,13 +754,13 @@ async function createBook() {
     }
 
 
-if (!imageFile || !imageFile.type.startsWith("image/")) {
+if (!imageFile) {
 
     message.className =
         "message error";
 
     message.textContent =
-        "❌ Please choose an image for your book cover.";
+        "❌ Upload a book cover.";
 
     return;
 }
