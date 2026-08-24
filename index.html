@@ -1056,21 +1056,53 @@ function closeReader() {
    DELETE BOOK
 ========================================= */
 
-function deleteBook(index) {
+async function deleteBook(id) {
 
-    if (
-        !confirm(
-            "Are you sure you want to delete this book?"
-        )
-    ) {
+    if (!id) {
+        console.error("❌ No book ID was provided.");
         return;
     }
 
-    books.splice(index, 1);
+    const confirmed = confirm(
+        "🗑️ Are you sure you want to delete this book?"
+    );
 
-    saveBooks();
+    if (!confirmed) {
+        return;
+    }
 
-    displayBooks();
+    try {
+
+        await deleteDoc(
+            doc(db, "books", id)
+        );
+
+        console.log(
+            "🗑️ Book deleted from Firebase:",
+            id
+        );
+
+        // Remove it from the local array
+        books = books.filter(
+            book => book.id !== id
+        );
+
+        // Refresh the books on screen
+        displayBooks();
+
+        alert("✅ Book deleted!");
+
+    } catch (error) {
+
+        console.error(
+            "❌ Could not delete book:",
+            error
+        );
+
+        alert(
+            "❌ The book could not be deleted."
+        );
+    }
 }
 
 
