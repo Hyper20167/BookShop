@@ -516,12 +516,22 @@ function displayBooks() {
 
         card.innerHTML = `
 
-            <img
-                src="${escapeHTML(book.image)}"
-                alt="${escapeHTML(book.title)}"
-                onerror="
-                this.src='https://via.placeholder.com/600x800?text=Book'
-                "
+<img
+    src="${escapeHTML(book.image || 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="800">
+            <rect width="600" height="800" fill="#eeeeee"/>
+            <text x="300" y="400"
+                  text-anchor="middle"
+                  font-family="Arial"
+                  font-size="40"
+                  fill="#555">
+                Book
+            </text>
+        </svg>
+    `))}"
+    alt="${escapeHTML(book.title)}"
+    onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'600\' height=\'800\'><rect width=\'600\' height=\'800\' fill=\'#eeeeee\'/><text x=\'300\' y=\'400\' text-anchor=\'middle\' font-family=\'Arial\' font-size=\'40\' fill=\'#555\'>Book</text></svg>');"
+>
             >
 
             <h2>
@@ -1056,10 +1066,13 @@ function closeReader() {
    DELETE BOOK
 ========================================= */
 
-async function deleteBook(id) {
+window.deleteBook = async function(id) {
+
+    console.log("🗑️ Trying to delete book:", id);
 
     if (!id) {
-        console.error("❌ No book ID was provided.");
+        console.error("❌ No book ID!");
+        alert("❌ This book has no Firebase ID.");
         return;
     }
 
@@ -1073,39 +1086,38 @@ async function deleteBook(id) {
 
     try {
 
-        await deleteDoc(
-            doc(db, "books", id)
-        );
+        const bookRef = doc(db, "books", id);
+
+        await deleteDoc(bookRef);
 
         console.log(
-            "🗑️ Book deleted from Firebase:",
+            "✅ Book deleted from Firebase:",
             id
         );
 
-        // Remove it from the local array
+        // Remove from the local array
         books = books.filter(
             book => book.id !== id
         );
 
-        // Refresh the books on screen
+        // Update the screen
         displayBooks();
 
-        alert("✅ Book deleted!");
+        alert("✅ Book deleted successfully!");
 
     } catch (error) {
 
         console.error(
-            "❌ Could not delete book:",
+            "❌ Firebase delete error:",
             error
         );
 
         alert(
-            "❌ The book could not be deleted."
+            "❌ Could not delete book.\n\n" +
+            error.message
         );
     }
-}
-
-
+};
 /* =========================================
    SAVE BOOKS
 ========================================= */
